@@ -65,15 +65,20 @@ public class GameFrame extends JFrame implements SharedConstants, IGMListener {
         add(boardPanel,    BorderLayout.CENTER);
        
         pack();
+        
+        initializeGame();
+        gameManager.createPlayer1(TYPE_HUMAN, "Human1");
+        gameManager.createPlayer2(TYPE_HUMAN, "Human2");
+        executeGame();
     }
     
     private void initializeGame() {
         gameThread.interrupt();
-        gameManager.clearGrid();
         gameManager.clearIGGListeners();
         gameManager.clearIGMListeners();
         gameManager.registerIGGListener(gameBoard);
         gameManager.registerIGMListener(this);
+        gameManager.clearGrid();
         networkManager.closeConnection();
     }
     
@@ -123,14 +128,20 @@ public class GameFrame extends JFrame implements SharedConstants, IGMListener {
     private class ButtonNewGameListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent event) {            
-            SetupGameDialog dialog = new SetupGameDialog(GameFrame.this);
+            /*SetupGameDialog dialog = new SetupGameDialog(GameFrame.this);
             
             if(dialog.getSelection() == SetupGameDialog.SELECTION_OK) {
                 initializeGame();
                 gameManager.createPlayer1(dialog.getPlayer1Type(), dialog.getPlayer1Name());
                 gameManager.createPlayer2(dialog.getPlayer2Type(), dialog.getPlayer2Name());
                 executeGame();
-            }
+            }*/
+            
+            initializeGame();
+            gameManager.createPlayer1(TYPE_HUMAN, "Human1");
+            gameManager.createPlayer2(TYPE_HUMAN, "Human2");
+            executeGame();
+            
         }   
     }
     
@@ -174,6 +185,11 @@ public class GameFrame extends JFrame implements SharedConstants, IGMListener {
             initializeGame();
             CardLayout menuView = (CardLayout)menuPanelView.getLayout();
             menuView.show(menuPanelView, MENU_PANEL_VIEW);
+            
+            initializeGame();
+            gameManager.createPlayer1(TYPE_HUMAN, "Human1");
+            gameManager.createPlayer2(TYPE_HUMAN, "Human2");
+            executeGame();
         }   
     }
 }

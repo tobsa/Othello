@@ -6,14 +6,15 @@ import SharedSystem.SharedConstants;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class GameBoard extends JPanel implements SharedConstants, IGGListener {
     private JLabel grid[] = new JLabel[GRID_SIZE * GRID_SIZE];
-    private ImageIcon emptyIcon  = new ImageIcon("images/empty.png");
-    private ImageIcon blackIcon  = new ImageIcon("images/black.png");
+    private ImageIcon emptyIcon = new ImageIcon("images/empty.png");
+    private ImageIcon blackIcon = new ImageIcon("images/black.png");
     private ImageIcon whiteIcon = new ImageIcon("images/white.png");
     
     public GameBoard() {
@@ -28,17 +29,26 @@ public class GameBoard extends JPanel implements SharedConstants, IGGListener {
     }
 
     @Override
-    public void updateMove(int index, int id) {
+    public void updateMove(int index, int id, List<Integer> flippedMarkers) {
         switch(id) {
             case PLAYER_EMPTY:
-                grid[index].setIcon(emptyIcon);
+                updateMove(index, flippedMarkers, emptyIcon);
                 break;
             case PLAYER_1:
-                grid[index].setIcon(blackIcon);
+                updateMove(index, flippedMarkers, blackIcon);
                 break;
             case PLAYER_2:
-                grid[index].setIcon(whiteIcon);
+                updateMove(index, flippedMarkers, whiteIcon);
                 break;
+        }
+    }
+    
+    private void updateMove(int index, List<Integer> flippedMarkers, ImageIcon icon) {
+        grid[index].setIcon(icon);
+        
+        if(flippedMarkers != null) {
+            for(int i : flippedMarkers)
+                grid[i].setIcon(icon);
         }
     }
     

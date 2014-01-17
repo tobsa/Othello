@@ -11,7 +11,7 @@ public class Othello {
         setLookAndFeel();
         
         GameFrame frame = new GameFrame();
-        frame.setTitle("Tic Tac Toe");
+        frame.setTitle("Othello");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
