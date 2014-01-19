@@ -2,6 +2,7 @@ package GuiSystem;
 
 import GameSystem.GameManager;
 import NetworkSystem.NetworkManager;
+import SharedSystem.BlockQueue;
 import SharedSystem.IGMListener;
 import SharedSystem.SharedConstants;
 import java.awt.BorderLayout;
@@ -9,6 +10,7 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
@@ -27,20 +29,26 @@ public class GameFrame extends JFrame implements SharedConstants, IGMListener {
     private JButton networkGameButton = new JButton("Network Game");
     private JButton exitGameButton    = new JButton("Exit Game");
     private JButton backButton        = new JButton("Back");
+    private JButton passButton        = new JButton("Pass");
     private GameBoard gameBoard = new GameBoard();
     private NetworkManager networkManager = new NetworkManager();
     private GameManager gameManager = new GameManager(networkManager);
     private Thread gameThread = new Thread(gameManager);
     private JLabel playerTurnLabel = new JLabel("");
     private JPanel menuPanelView = new JPanel(new CardLayout());
+    private JLabel player1Label = new JLabel("Player");
+    private JLabel player2Label = new JLabel("Player");
+    private JLabel player1ScoreLabel = new JLabel();
+    private JLabel player2ScoreLabel = new JLabel();
     
     public GameFrame() {
         newGameButton.addActionListener(new ButtonNewGameListener());
         networkGameButton.addActionListener(new ButtonNetworkGameListener());
         exitGameButton.addActionListener(new ButtonExitGameListener());
         backButton.addActionListener(new ButtonBackListener());
-        
-        playerTurnLabel.setFont(new Font("Arial", Font.PLAIN, 20));
+        passButton.addActionListener(new ButtonPassListener());
+                
+        playerTurnLabel.setFont(new Font("Arial", Font.PLAIN, 18));
         playerTurnLabel.setForeground(Color.DARK_GRAY);
         
         JPanel menuPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -52,8 +60,17 @@ public class GameFrame extends JFrame implements SharedConstants, IGMListener {
         JPanel gamePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         gamePanel.setBorder(BorderFactory.createCompoundBorder(new EmptyBorder(10, 10, 5, 10), new EtchedBorder()));
         gamePanel.add(backButton);
-        gamePanel.add(playerTurnLabel);
+        gamePanel.add(passButton);
         
+        JPanel p = new JPanel(new GridLayout(2, 2, 15, 0));
+        p.setBorder(new EmptyBorder(0, 10, 0, 10));
+        p.add(player1Label);
+        p.add(player1ScoreLabel);
+        p.add(player2Label);
+        p.add(player2ScoreLabel);
+        gamePanel.add(p);
+        gamePanel.add(playerTurnLabel);
+                
         menuPanelView.add(menuPanel, MENU_PANEL_VIEW);
         menuPanelView.add(gamePanel, GAME_PANEL_VIEW);
         
@@ -65,11 +82,6 @@ public class GameFrame extends JFrame implements SharedConstants, IGMListener {
         add(boardPanel,    BorderLayout.CENTER);
        
         pack();
-        
-        initializeGame();
-        gameManager.createPlayer1(TYPE_HUMAN, "Human1");
-        gameManager.createPlayer2(TYPE_HUMAN, "Human2");
-        executeGame();
     }
     
     private void initializeGame() {
@@ -124,24 +136,31 @@ public class GameFrame extends JFrame implements SharedConstants, IGMListener {
     public void updateLostConnection() {
         new MessageDialog(this, "Lost connection!");
     }
+    
+    @Override
+    public void updatePassButton(boolean enablePass) {
+        passButton.setEnabled(enablePass);
+    }
+    
+    @Override
+    public void updateScore(String name1, int score1, String name2, int score2) {
+        player1Label.setText(name1 + ": ");
+        player2Label.setText(name2 + ": ");
+        player1ScoreLabel.setText("" + score1);
+        player2ScoreLabel.setText("" + score2);
+    }
 
     private class ButtonNewGameListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent event) {            
-            /*SetupGameDialog dialog = new SetupGameDialog(GameFrame.this);
+            SetupGameDialog dialog = new SetupGameDialog(GameFrame.this);
             
             if(dialog.getSelection() == SetupGameDialog.SELECTION_OK) {
                 initializeGame();
                 gameManager.createPlayer1(dialog.getPlayer1Type(), dialog.getPlayer1Name());
                 gameManager.createPlayer2(dialog.getPlayer2Type(), dialog.getPlayer2Name());
                 executeGame();
-            }*/
-            
-            initializeGame();
-            gameManager.createPlayer1(TYPE_HUMAN, "Human1");
-            gameManager.createPlayer2(TYPE_HUMAN, "Human2");
-            executeGame();
-            
+            }
         }   
     }
     
@@ -185,11 +204,13 @@ public class GameFrame extends JFrame implements SharedConstants, IGMListener {
             initializeGame();
             CardLayout menuView = (CardLayout)menuPanelView.getLayout();
             menuView.show(menuPanelView, MENU_PANEL_VIEW);
-            
-            initializeGame();
-            gameManager.createPlayer1(TYPE_HUMAN, "Human1");
-            gameManager.createPlayer2(TYPE_HUMAN, "Human2");
-            executeGame();
+        }   
+    }
+    
+    private class ButtonPassListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent event) {
+            BlockQueue.getInstance().add(-1);
         }   
     }
 }

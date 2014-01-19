@@ -98,20 +98,28 @@ public class GameManager implements SharedConstants, Runnable {
         listeners.clear();
     }
     
-    private boolean makeMove(Player player, int winner) throws InterruptedException, IOException {        
+    private boolean makeMove(Player player) throws InterruptedException, IOException {        
         while(true) {
-            for(IGMListener listener : listeners)
-                listener.updateTurn(player.getName());
-
             BlockQueue.getInstance().clear();
-
+            
+            boolean enablePass = gameGrid.getLegalMoves(player.getID()).isEmpty();
+            for(IGMListener listener : listeners) {
+                listener.updateTurn(player.getName());
+                listener.updatePassButton(enablePass);
+            }
+          
             if(!gameGrid.setID(player.computeMove(), player.getID()))
                 continue;
-
-            int result = gameGrid.getResult();        
-            if(result == winner || result == RESULT_DRAW) {
-                for(IGMListener listener : listeners)
+            
+            int result = gameGrid.getResult();
+            for(IGMListener listener : listeners)
+                listener.updateScore(player1.getName(), gameGrid.getBlackBricks(), player2.getName(), gameGrid.getWhiteBricks()); 
+            
+            if(result == RESULT_PLAYER_1_WON || result == RESULT_PLAYER_2_WON || result == RESULT_DRAW) {
+                for(IGMListener listener : listeners) {
+                    listener.updateScore(player1.getName(), gameGrid.getBlackBricks(), player2.getName(), gameGrid.getWhiteBricks()); 
                     listener.updateWinner(result, player1.getName(), player2.getName());
+                }
 
                 return true;
             }
@@ -122,11 +130,14 @@ public class GameManager implements SharedConstants, Runnable {
 
     @Override
     public void run() {
+        for(IGMListener listener : listeners)
+                listener.updateScore(player1.getName(), gameGrid.getBlackBricks(), player2.getName(), gameGrid.getWhiteBricks());
+        
         while(true) {
             try {
-                if(makeMove(player1, RESULT_PLAYER_1_WON))
+                if(makeMove(player1))
                     break;
-                if(makeMove(player2, RESULT_PLAYER_2_WON))
+                if(makeMove(player2))
                     break;
             } catch (InterruptedException ex) {
                 break;

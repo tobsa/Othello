@@ -36,7 +36,7 @@ public class SetupGameDialog extends JDialog {
         player2TypeComboBox.addItem("Easy Computer");
         player2TypeComboBox.addItem("Normal Computer");
         player2TypeComboBox.addItem("Hard Computer");
-        player2TypeComboBox.setSelectedIndex(2);
+        player2TypeComboBox.setSelectedIndex(1);
         
         okButton.addActionListener(new ButtonOKListener());
         cancelButton.addActionListener(new ButtonCancelListener());

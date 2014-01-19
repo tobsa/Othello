@@ -3,7 +3,7 @@ package SharedSystem;
 
 public interface SharedConstants {
     public static final int GRID_SIZE = 8;
-    public static final int IMAGE_SIZE = 100;
+    public static final int IMAGE_SIZE = 75;
     
     public static final int PLAYER_EMPTY = 0;
     public static final int PLAYER_1 = 1;

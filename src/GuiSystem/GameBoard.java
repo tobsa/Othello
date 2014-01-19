@@ -3,6 +3,8 @@ package GuiSystem;
 import SharedSystem.BlockQueue;
 import SharedSystem.IGGListener;
 import SharedSystem.SharedConstants;
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -17,7 +19,7 @@ public class GameBoard extends JPanel implements SharedConstants, IGGListener {
     private ImageIcon blackIcon = new ImageIcon("images/black.png");
     private ImageIcon whiteIcon = new ImageIcon("images/white.png");
     
-    public GameBoard() {
+    public GameBoard() {        
         setLayout(new GridLayout(GRID_SIZE, GRID_SIZE));
         addMouseListener(new MousePressedListener());
         
