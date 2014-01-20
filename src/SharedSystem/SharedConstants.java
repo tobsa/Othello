@@ -10,9 +10,9 @@ public interface SharedConstants {
     public static final int PLAYER_2 = 2;
     
     public static final int TYPE_HUMAN = 0;
-    public static final int TYPE_COMPUTER_EASY = 1;
-    public static final int TYPE_COMPUTER_NORMAL = 2;
-    public static final int TYPE_COMPUTER_HARD = 3;
+    public static final int TYPE_COMPUTER_RANDOMIZER = 1;
+    public static final int TYPE_COMPUTER_GREEDY = 2;
+    public static final int TYPE_COMPUTER_DOUCHEBAG = 3;
     public static final int TYPE_NETWORK_READ = 4;
     public static final int TYPE_NETWORK_SEND = 5;
     

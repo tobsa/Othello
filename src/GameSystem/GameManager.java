@@ -17,7 +17,7 @@ public class GameManager implements SharedConstants, Runnable {
     private GameGrid gameGrid = new GameGrid();
     private List<IGMListener> listeners = new ArrayList();
     private NetworkManager networkManager;
-    
+        
     public GameManager(NetworkManager networkManager) {
         this.networkManager = networkManager;
     }
@@ -27,14 +27,14 @@ public class GameManager implements SharedConstants, Runnable {
             case TYPE_HUMAN:
                 player1 = new Human(PLAYER_1, name);
                 break;
-            case TYPE_COMPUTER_EASY:
-                player1 = new ComputerEasy(PLAYER_1, name, gameGrid);
+            case TYPE_COMPUTER_RANDOMIZER:
+                player1 = new ComputerRandomizer(PLAYER_1, name, gameGrid);
                 break;
-            case TYPE_COMPUTER_NORMAL:
-                player1 = new ComputerNormal(PLAYER_1, name, gameGrid);
+            case TYPE_COMPUTER_GREEDY:
+                player1 = new ComputerGreedy(PLAYER_1, name, gameGrid);
                 break;
-            case TYPE_COMPUTER_HARD:
-                player1 = new ComputerHard(PLAYER_1, name, gameGrid);
+            case TYPE_COMPUTER_DOUCHEBAG:
+                player1 = new ComputerMinimax(PLAYER_1, name, gameGrid);
                 break;
         }
     }
@@ -44,14 +44,14 @@ public class GameManager implements SharedConstants, Runnable {
             case TYPE_HUMAN:
                 player2 = new Human(PLAYER_2, name);
                 break;
-            case TYPE_COMPUTER_EASY:
-                player2 = new ComputerEasy(PLAYER_2, name, gameGrid);
+            case TYPE_COMPUTER_RANDOMIZER:
+                player2 = new ComputerRandomizer(PLAYER_2, name, gameGrid);
                 break;
-            case TYPE_COMPUTER_NORMAL:
-                player2 = new ComputerNormal(PLAYER_2, name, gameGrid);
+            case TYPE_COMPUTER_GREEDY:
+                player2 = new ComputerGreedy(PLAYER_2, name, gameGrid);
                 break;
-            case TYPE_COMPUTER_HARD:
-                player2 = new ComputerHard(PLAYER_2, name, gameGrid);
+            case TYPE_COMPUTER_DOUCHEBAG:
+                player2 = new ComputerMinimax(PLAYER_2, name, gameGrid);
                 break;
         }
     }

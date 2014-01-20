@@ -25,6 +25,11 @@ public class GameBoard extends JPanel implements SharedConstants, IGGListener {
         
         for(int i = 0; i < grid.length; i++) {
             JLabel label = new JLabel(emptyIcon);
+            label.setText("" + i);
+            label.setFont(new Font("Arial", Font.PLAIN, 20));
+            label.setForeground(Color.RED);
+            label.setHorizontalTextPosition(JLabel.CENTER);
+            label.setVerticalTextPosition(JLabel.CENTER);
             grid[i] = label;
             add(label);
         }

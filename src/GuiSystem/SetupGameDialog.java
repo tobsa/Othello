@@ -18,25 +18,25 @@ public class SetupGameDialog extends JDialog {
     public static final int SELECTION_OK = 0;
     public static final int SELECTION_CANCEL = 1;
     private int selection;
-    private JTextField player1NameTextfield       = new JTextField("Human", 10);
-    private JTextField player2NameTextfield       = new JTextField("Computer", 10);
+    private JTextField player1NameTextfield       = new JTextField("Black", 10);
+    private JTextField player2NameTextfield       = new JTextField("White", 10);
     private JComboBox<String> player1TypeComboBox = new JComboBox();
     private JComboBox<String> player2TypeComboBox = new JComboBox();
     private JButton okButton     = new JButton("OK");
-    private JButton cancelButton = new JButton("CANCEL");    
+    private JButton cancelButton = new JButton("Cancel");    
     
     public SetupGameDialog(JFrame parent) {
         setLayout(new BorderLayout());
         
         player1TypeComboBox.addItem("Human");
-        player1TypeComboBox.addItem("Easy Computer");
-        player1TypeComboBox.addItem("Normal Computer");
-        player1TypeComboBox.addItem("Hard Computer");
+        player1TypeComboBox.addItem("RandomizerAI");
+        player1TypeComboBox.addItem("GreedyAI");
+        player1TypeComboBox.addItem("DoucheBagAI");
         player2TypeComboBox.addItem("Human");
-        player2TypeComboBox.addItem("Easy Computer");
-        player2TypeComboBox.addItem("Normal Computer");
-        player2TypeComboBox.addItem("Hard Computer");
-        player2TypeComboBox.setSelectedIndex(1);
+        player2TypeComboBox.addItem("RandomizerAI");
+        player2TypeComboBox.addItem("GreedyAI");
+        player2TypeComboBox.addItem("DoucheBagAI");
+        player2TypeComboBox.setSelectedIndex(3);
         
         okButton.addActionListener(new ButtonOKListener());
         cancelButton.addActionListener(new ButtonCancelListener());

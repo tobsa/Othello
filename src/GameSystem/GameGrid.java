@@ -3,7 +3,10 @@ package GameSystem;
 import SharedSystem.IGGListener;
 import SharedSystem.SharedConstants;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 public class GameGrid implements SharedConstants {
     private int grid[] = new int[GRID_SIZE * GRID_SIZE];
@@ -35,6 +38,68 @@ public class GameGrid implements SharedConstants {
     public int getID(int index) {
         return grid[index];
     }
+    
+    public void replaceID(int index, int id, List<Integer> flippedMarkers) {
+        if(flippedMarkers.isEmpty()) {
+            flippedMarkers.addAll(getFlippedMarkers(index, id));
+            
+            for(int i : flippedMarkers)
+                grid[i] = id;
+        }
+        else
+            for(int i : flippedMarkers)
+                grid[i] = grid[i] == PLAYER_1 ? PLAYER_2 : PLAYER_1;
+        
+                                               
+        grid[index] = id;
+    } 
+        
+    public int getBestLegalMove(int id) {
+        List<Integer> legalMoves = getLegalMoves(id);
+        
+        int index = -1;
+        int maxSize  = -1;
+        for(int i : legalMoves) {
+            int size = getFlippedMarkers(i, id).size();            
+            if(size > maxSize) {
+                maxSize = size;
+                index = i;
+            }
+        }
+               
+        return index;
+    }
+    
+    public int getBestSabotageMove(int id) {
+        List<Integer> legalMoves = getLegalMoves(id);
+        
+        GameGrid gameGrid = clone();
+        int minBricks = Integer.MAX_VALUE;
+        int index = -1;
+        for(int i : legalMoves) {
+            List<Integer> flippedMarkers = new ArrayList();
+            gameGrid.replaceID(i, id, flippedMarkers);
+            int bricks = gameGrid.calculateBricks(id == PLAYER_1 ? PLAYER_2 : PLAYER_1);
+            gameGrid.replaceID(i, 0, flippedMarkers);
+            
+            if(bricks < minBricks) {
+                minBricks = bricks;
+                index = i;
+            }
+        }
+        
+        return index;
+    }
+    
+    private int calculateBricks(int id) {
+        int bricks = 0;
+        for(int i = 0; i < grid.length; i++) {
+            if(grid[i] == id)
+                bricks++;
+        }
+        
+        return bricks;
+    }
         
     public List<Integer> getLegalMoves(int id) {
         List<Integer> legalMoves = new ArrayList();
@@ -56,6 +121,9 @@ public class GameGrid implements SharedConstants {
             checkSouth(i, id, x, y, legalMoves);
         }
         
+        Set<String> s = new LinkedHashSet(legalMoves);
+        legalMoves = new ArrayList(s);
+        
         return legalMoves;
     }
     
@@ -68,7 +136,16 @@ public class GameGrid implements SharedConstants {
         grid[index - 1] = 2;
         grid[index - GRID_SIZE] = 2;
         grid[index - GRID_SIZE - 1] = 1;
-         
+//        
+//        grid[0] = 2;
+//        grid[1] = 1;
+//        grid[2] = 1;
+//        grid[3] = 1;
+//        grid[4] = 2;
+//        grid[5] = 1;
+        //grid[8] = 1;
+        //grid[7] = 2;
+                
         for(int i = 0; i < grid.length; i++) {
             for(IGGListener listener : listeners)
                 listener.updateMove(i, grid[i], null);
@@ -81,6 +158,10 @@ public class GameGrid implements SharedConstants {
     
     public int getWhiteBricks() {
         return whiteBricks;
+    }
+    
+    public int getBricks(int id) {
+        return id == PLAYER_1 ? blackBricks : whiteBricks;
     }
            
     public int getResult() {        
@@ -112,6 +193,17 @@ public class GameGrid implements SharedConstants {
     
     public void clearListeners() {
         listeners.clear();
+    }
+    
+    @Override
+    public GameGrid clone() {
+        GameGrid gameGrid = new GameGrid();
+                
+        gameGrid.grid = grid.clone();
+        gameGrid.whiteBricks = whiteBricks;
+        gameGrid.blackBricks = blackBricks;
+        
+        return gameGrid;
     }
     
     private boolean hasLegalMoves(int id) {
@@ -259,6 +351,8 @@ public class GameGrid implements SharedConstants {
         flippedMarkers.addAll(getFlippedStraightMarkers(index, id, 1, GRID_SIZE - 1, false));
         flippedMarkers.addAll(getFlippedStraightMarkers(index, id, -1, 0, false));
         
+
+                
         return flippedMarkers;
     }
     
@@ -278,6 +372,9 @@ public class GameGrid implements SharedConstants {
         if(!flippedMarkers.isEmpty() && grid[flippedMarkers.get(flippedMarkers.size() - 1)] != id || flippedMarkers.size() == 1)
             flippedMarkers.clear();
         
+        if(!flippedMarkers.isEmpty())
+            flippedMarkers.remove(flippedMarkers.size() - 1);
+        
         return flippedMarkers;
     }
     
@@ -294,6 +391,9 @@ public class GameGrid implements SharedConstants {
         
         if(!flippedMarkers.isEmpty() && grid[flippedMarkers.get(flippedMarkers.size() - 1)] != id || flippedMarkers.size() == 1)
             flippedMarkers.clear();
+        
+        if(!flippedMarkers.isEmpty())
+            flippedMarkers.remove(flippedMarkers.size() - 1);
         
         return flippedMarkers;
     }

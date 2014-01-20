@@ -4,10 +4,10 @@ import SharedSystem.SharedConstants;
 import java.util.List;
 import java.util.Random;
 
-public class ComputerEasy extends Player implements SharedConstants {
+public class ComputerRandomizer extends Player implements SharedConstants {
     private GameGrid gameGrid;
     
-    public ComputerEasy(int id, String name, GameGrid gameGrid) {
+    public ComputerRandomizer(int id, String name, GameGrid gameGrid) {
         super(id, name);
         this.gameGrid = gameGrid;
     }
