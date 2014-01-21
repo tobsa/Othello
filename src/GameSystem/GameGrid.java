@@ -39,6 +39,10 @@ public class GameGrid implements SharedConstants {
         return grid[index];
     }
     
+    public int getSize() {
+        return grid.length;
+    }
+    
     public void replaceID(int index, int id, List<Integer> flippedMarkers) {
         if(flippedMarkers.isEmpty()) {
             flippedMarkers.addAll(getFlippedMarkers(index, id));

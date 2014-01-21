@@ -29,13 +29,13 @@ public class SetupGameDialog extends JDialog {
         setLayout(new BorderLayout());
         
         player1TypeComboBox.addItem("Human");
-        player1TypeComboBox.addItem("RandomizerAI");
-        player1TypeComboBox.addItem("GreedyAI");
-        player1TypeComboBox.addItem("DoucheBagAI");
+        player1TypeComboBox.addItem("Computer (Randomizer)");
+        player1TypeComboBox.addItem("Computer (Greedy)");
+        player1TypeComboBox.addItem("Computer (Heuristic)");
         player2TypeComboBox.addItem("Human");
-        player2TypeComboBox.addItem("RandomizerAI");
-        player2TypeComboBox.addItem("GreedyAI");
-        player2TypeComboBox.addItem("DoucheBagAI");
+        player2TypeComboBox.addItem("Computer (Randomizer)");
+        player2TypeComboBox.addItem("Computer (Greedy)");
+        player2TypeComboBox.addItem("Computer (Heuristic)");
         player2TypeComboBox.setSelectedIndex(3);
         
         okButton.addActionListener(new ButtonOKListener());
@@ -106,3 +106,4 @@ public class SetupGameDialog extends JDialog {
         }
     }
 }
+

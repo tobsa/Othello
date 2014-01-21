@@ -17,6 +17,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
@@ -201,9 +202,12 @@ public class GameFrame extends JFrame implements SharedConstants, IGMListener {
     private class ButtonBackListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent event) {
-            initializeGame();
-            CardLayout menuView = (CardLayout)menuPanelView.getLayout();
-            menuView.show(menuPanelView, MENU_PANEL_VIEW);
+            int selection = JOptionPane.showConfirmDialog(GameFrame.this, "Are you sure you want to quit?", "Confirm?", JOptionPane.YES_NO_OPTION);
+            if(selection == JOptionPane.YES_OPTION) {   
+                initializeGame();
+                CardLayout menuView = (CardLayout)menuPanelView.getLayout();
+                menuView.show(menuPanelView, MENU_PANEL_VIEW);
+            }
         }   
     }
     

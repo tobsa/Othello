@@ -33,8 +33,8 @@ public class GameManager implements SharedConstants, Runnable {
             case TYPE_COMPUTER_GREEDY:
                 player1 = new ComputerGreedy(PLAYER_1, name, gameGrid);
                 break;
-            case TYPE_COMPUTER_DOUCHEBAG:
-                player1 = new ComputerMinimax(PLAYER_1, name, gameGrid);
+            case TYPE_COMPUTER_HEURISTIC:
+                player1 = new ComputerHeuristic(PLAYER_1, name, gameGrid);
                 break;
         }
     }
@@ -50,8 +50,8 @@ public class GameManager implements SharedConstants, Runnable {
             case TYPE_COMPUTER_GREEDY:
                 player2 = new ComputerGreedy(PLAYER_2, name, gameGrid);
                 break;
-            case TYPE_COMPUTER_DOUCHEBAG:
-                player2 = new ComputerMinimax(PLAYER_2, name, gameGrid);
+            case TYPE_COMPUTER_HEURISTIC:
+                player2 = new ComputerHeuristic(PLAYER_2, name, gameGrid);
                 break;
         }
     }
